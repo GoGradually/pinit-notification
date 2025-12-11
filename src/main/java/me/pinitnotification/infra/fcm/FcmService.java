@@ -3,9 +3,9 @@ package me.pinitnotification.infra.fcm;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.firebase.messaging.FirebaseMessagingException;
 import com.google.firebase.messaging.Message;
-import com.google.firebase.messaging.Notification;
 import me.pinitnotification.application.push.PushService;
 import me.pinitnotification.application.push.exception.PushSendFailedException;
+import me.pinitnotification.domain.notification.Notification;
 import me.pinitnotification.domain.push.PushSubscription;
 import me.pinitnotification.domain.push.PushSubscriptionRepository;
 import org.springframework.beans.factory.annotation.Value;
@@ -25,16 +25,11 @@ public class FcmService implements PushService {
     }
 
     @Override
-    public void sendPushMessage(String token, String title, String body) {
-        Notification notification = Notification.builder()
-                .setTitle(title)
-                .setBody(body)
-                .build();
-
+    public void sendPushMessage(String token, Notification notification) {
         Message message = Message.builder()
                 .setToken(token)
-                .setNotification(notification).build();
-
+                .putAllData(notification.getData())
+                .build();
         try{
             firebaseMessaging.send(message);
         } catch (FirebaseMessagingException e) {
@@ -58,6 +53,4 @@ public class FcmService implements PushService {
     public void unsubscribe(Long memberId, String token) {
         pushSubscriptionRepository.delete(new PushSubscription(memberId, token));
     }
-
-
 }
