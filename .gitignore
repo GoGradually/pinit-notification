@@ -39,3 +39,4 @@ out/
 src/main/resources/firebase/**
 src/main/resources/application*.yml
 src/main/resources/jwt/**
+src/main/resources/static/async-api/**
