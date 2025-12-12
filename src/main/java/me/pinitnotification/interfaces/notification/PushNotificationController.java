@@ -1,4 +1,4 @@
-package me.pinitnotification.interfaces;
+package me.pinitnotification.interfaces.notification;
 
 import me.pinitnotification.application.push.PushService;
 import me.pinitnotification.domain.member.MemberId;
@@ -9,10 +9,11 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import me.pinitnotification.interfaces.notification.dto.PushTokenRequest;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -45,13 +46,12 @@ public class PushNotificationController {
     )
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "구독 등록 완료"),
-            @ApiResponse(responseCode = "401", description = "토큰이 유효하지 않음", content = @Content)
+            @ApiResponse(responseCode = "400", description = "토큰이 유효하지 않음", content = @Content)
     })
     public void subscribe(
             @Parameter(hidden = true) @MemberId Long memberId,
-            @Parameter(description = "클라이언트에서 발급받은 FCM 푸시 토큰", required = true)
-            @RequestParam String token) {
-        pushService.subscribe(memberId, token);
+            @RequestBody PushTokenRequest request) {
+        pushService.subscribe(memberId, request.token());
     }
 
     @PostMapping("/unsubscribe")
@@ -61,12 +61,13 @@ public class PushNotificationController {
     )
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "구독 해지 완료"),
-            @ApiResponse(responseCode = "401", description = "토큰이 유효하지 않음", content = @Content)
+            @ApiResponse(responseCode = "400", description = "토큰이 유효하지 않음", content = @Content)
     })
     public void unsubscribe(
             @Parameter(hidden = true) @MemberId Long memberId,
-            @Parameter(description = "클라이언트에서 발급받은 FCM 푸시 토큰", required = true)
-            @RequestParam String token) {
-        pushService.unsubscribe(memberId, token);
+            @RequestBody PushTokenRequest request) {
+        pushService.unsubscribe(memberId, request.token());
     }
+
+
 }
