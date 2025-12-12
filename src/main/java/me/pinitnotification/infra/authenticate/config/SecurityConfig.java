@@ -62,7 +62,7 @@ public class SecurityConfig {
 
     @Bean
     public JwtTokenProvider jwtTokenProvider() {
-        PublicKey publicKey = RsaKeyProvider.loadPublicKey("keys/public_key.pem");
+        PublicKey publicKey = RsaKeyProvider.loadPublicKey("jwt/public_key.pem");
         return new JwtTokenProvider(publicKey);
     }
 
