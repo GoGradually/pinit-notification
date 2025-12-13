@@ -1,12 +1,14 @@
 package me.pinitnotification.infra.events.payload;
 
+import jakarta.validation.constraints.NotNull;
+
 import java.time.OffsetDateTime;
 
 public record ScheduleTimeUpcomingUpdatedMessage(
-        Long ownerId,
-        Long scheduleId,
-        OffsetDateTime newUpcomingTime,
-        OffsetDateTime occurredAt,
-        String idempotentKey
+        @NotNull Long ownerId,
+        @NotNull Long scheduleId,
+        @NotNull OffsetDateTime newUpcomingTime,
+        @NotNull OffsetDateTime occurredAt,
+        @NotNull String idempotentKey
 ) {
 }
