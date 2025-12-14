@@ -1,14 +1,11 @@
 package me.pinitnotification.domain.notification;
 
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
-import jakarta.persistence.UniqueConstraint;
-import jakarta.persistence.Column;
+import jakarta.persistence.*;
 import lombok.Getter;
 
+import java.time.OffsetDateTime;
+import java.time.format.DateTimeParseException;
 import java.util.Map;
 
 @Getter
@@ -22,7 +19,7 @@ import java.util.Map;
 )
 public class UpcomingScheduleNotification implements Notification {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Column(name = "owner_id", nullable = false)
     private Long ownerId;
@@ -56,5 +53,17 @@ public class UpcomingScheduleNotification implements Notification {
     public void updateScheduleStartTime(String scheduleStartTime, String idempotentKey) {
         this.scheduleStartTime = scheduleStartTime;
         this.idempotentKey = idempotentKey;
+    }
+
+    public boolean isDue(OffsetDateTime now) {
+        if (scheduleStartTime == null) {
+            return false;
+        }
+        try {
+            OffsetDateTime startTime = OffsetDateTime.parse(scheduleStartTime);
+            return !startTime.isAfter(now);
+        } catch (DateTimeParseException ex) {
+            return false;
+        }
     }
 }
