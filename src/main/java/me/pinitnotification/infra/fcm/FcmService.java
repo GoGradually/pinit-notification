@@ -3,6 +3,8 @@ package me.pinitnotification.infra.fcm;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.firebase.messaging.FirebaseMessagingException;
 import com.google.firebase.messaging.Message;
+import com.google.firebase.messaging.MessagingErrorCode;
+import lombok.extern.slf4j.Slf4j;
 import me.pinitnotification.application.push.PushService;
 import me.pinitnotification.application.push.exception.PushSendFailedException;
 import me.pinitnotification.domain.notification.Notification;
@@ -12,6 +14,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+@Slf4j
 @Service
 public class FcmService implements PushService {
     @Value("${vapid.keys.public}")
@@ -26,14 +29,19 @@ public class FcmService implements PushService {
 
     @Override
     public void sendPushMessage(String token, Notification notification) {
+        log.info("publish token: {}", token);
         Message message = Message.builder()
                 .setToken(token)
                 .putAllData(notification.getData())
                 .build();
-        try{
+        try {
             firebaseMessaging.send(message);
         } catch (FirebaseMessagingException e) {
-            throw new PushSendFailedException(e);
+            log.error(e.getMessage(), e);
+            if (e.getMessagingErrorCode() == MessagingErrorCode.UNREGISTERED) {
+                // Todo 토큰 삭제 방식 변경 필요
+                pushSubscriptionRepository.deleteByToken(token);
+            }
         }
     }
 
