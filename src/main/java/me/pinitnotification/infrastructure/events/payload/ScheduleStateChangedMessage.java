@@ -1,4 +1,4 @@
-package me.pinitnotification.infra.events.payload;
+package me.pinitnotification.infrastructure.events.payload;
 
 import jakarta.validation.constraints.NotNull;
 

@@ -1,4 +1,4 @@
-package me.pinitnotification.infra.authenticate;
+package me.pinitnotification.infrastructure.authenticate;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtParser;

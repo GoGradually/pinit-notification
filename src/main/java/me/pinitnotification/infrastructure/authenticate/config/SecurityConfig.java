@@ -1,10 +1,10 @@
-package me.pinitnotification.infra.authenticate.config;
+package me.pinitnotification.infrastructure.authenticate.config;
 
 import jakarta.servlet.http.HttpServletResponse;
-import me.pinitnotification.infra.authenticate.JwtAuthenticationFilter;
-import me.pinitnotification.infra.authenticate.JwtAuthenticationProvider;
-import me.pinitnotification.infra.authenticate.JwtTokenProvider;
-import me.pinitnotification.infra.authenticate.RsaKeyProvider;
+import me.pinitnotification.infrastructure.authenticate.JwtAuthenticationFilter;
+import me.pinitnotification.infrastructure.authenticate.JwtAuthenticationProvider;
+import me.pinitnotification.infrastructure.authenticate.JwtTokenProvider;
+import me.pinitnotification.infrastructure.authenticate.RsaKeyProvider;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;

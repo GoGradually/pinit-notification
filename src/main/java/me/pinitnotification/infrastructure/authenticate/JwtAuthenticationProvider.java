@@ -1,4 +1,4 @@
-package me.pinitnotification.infra.authenticate;
+package me.pinitnotification.infrastructure.authenticate;
 
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.BadCredentialsException;

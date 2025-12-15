@@ -1,4 +1,4 @@
-package me.pinitnotification.infra.fcm;
+package me.pinitnotification.infrastructure.fcm;
 
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.firebase.messaging.FirebaseMessagingException;
@@ -6,7 +6,6 @@ import com.google.firebase.messaging.Message;
 import com.google.firebase.messaging.MessagingErrorCode;
 import lombok.extern.slf4j.Slf4j;
 import me.pinitnotification.application.push.PushService;
-import me.pinitnotification.application.push.exception.PushSendFailedException;
 import me.pinitnotification.domain.notification.Notification;
 import me.pinitnotification.domain.push.PushSubscription;
 import me.pinitnotification.domain.push.PushSubscriptionRepository;

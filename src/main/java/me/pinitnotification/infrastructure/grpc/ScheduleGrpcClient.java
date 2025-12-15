@@ -1,4 +1,4 @@
-package me.pinitnotification.infra.grpc;
+package me.pinitnotification.infrastructure.grpc;
 
 import com.google.protobuf.Timestamp;
 import io.grpc.StatusRuntimeException;

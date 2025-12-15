@@ -1,4 +1,4 @@
-package me.pinitnotification.infra.grpc;
+package me.pinitnotification.infrastructure.grpc;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 

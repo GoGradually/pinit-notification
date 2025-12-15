@@ -1,4 +1,4 @@
-package me.pinitnotification.infra.events.config;
+package me.pinitnotification.infrastructure.events.config;
 
 import org.springframework.amqp.support.converter.Jackson2JsonMessageConverter;
 import org.springframework.amqp.support.converter.MessageConverter;

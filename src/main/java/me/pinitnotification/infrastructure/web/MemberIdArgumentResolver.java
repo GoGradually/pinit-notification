@@ -1,10 +1,10 @@
-package me.pinitnotification.infra.web;
+package me.pinitnotification.infrastructure.web;
 
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import me.pinitnotification.domain.member.MemberId;
 import me.pinitnotification.domain.member.exception.MemberNotFoundException;
-import me.pinitnotification.infra.authenticate.JwtTokenProvider;
+import me.pinitnotification.infrastructure.authenticate.JwtTokenProvider;
 import org.springframework.core.MethodParameter;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.support.WebDataBinderFactory;

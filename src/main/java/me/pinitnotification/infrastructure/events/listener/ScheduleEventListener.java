@@ -1,12 +1,12 @@
-package me.pinitnotification.infra.events.listener;
+package me.pinitnotification.infrastructure.events.listener;
 
 import me.pinitnotification.application.notification.ScheduleNotificationService;
 import me.pinitnotification.application.notification.command.ScheduleDeletedCommand;
 import me.pinitnotification.application.notification.command.ScheduleStateChangedCommand;
 import me.pinitnotification.application.notification.command.UpcomingUpdatedCommand;
-import me.pinitnotification.infra.events.payload.ScheduleDeletedMessage;
-import me.pinitnotification.infra.events.payload.ScheduleStateChangedMessage;
-import me.pinitnotification.infra.events.payload.ScheduleTimeUpcomingUpdatedMessage;
+import me.pinitnotification.infrastructure.events.payload.ScheduleDeletedMessage;
+import me.pinitnotification.infrastructure.events.payload.ScheduleStateChangedMessage;
+import me.pinitnotification.infrastructure.events.payload.ScheduleTimeUpcomingUpdatedMessage;
 import org.springframework.amqp.core.ExchangeTypes;
 import org.springframework.amqp.rabbit.annotation.Exchange;
 import org.springframework.amqp.rabbit.annotation.Queue;

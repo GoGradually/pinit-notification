@@ -1,4 +1,4 @@
-package me.pinitnotification.infra.authenticate.config;
+package me.pinitnotification.infrastructure.authenticate.config;
 
 import lombok.Getter;
 import lombok.Setter;
