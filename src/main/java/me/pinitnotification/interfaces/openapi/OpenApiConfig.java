@@ -1,4 +1,4 @@
-package me.pinitnotification.interfaces.config;
+package me.pinitnotification.interfaces.openapi;
 
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.servers.Server;
