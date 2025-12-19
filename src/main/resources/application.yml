@@ -1,0 +1,25 @@
+
+
+vapid:
+  keys:
+    public: BA7L1jqFAyxo_KZZZBkUeqC1uY6iSP1NvyNVqV-L_dmqEnHA__5cNs87WJ5QDiH8UC3hgLQu99mbbxlwZZf7J4U
+    private: ${VAPID_PRIVATE_KEY}
+
+
+
+cors:
+  allowed-origins:
+    - "http://localhost:5173"
+    - "http://localhost:5174"
+    - "https://pinit.go-gradually.me"
+  allowed-methods:
+    - GET
+    - POST
+    - PUT
+    - PATCH
+    - DELETE
+    - OPTIONS
+  allowed-headers:
+    - "*"
+  allow-credentials: true
+  max-age: 3600
