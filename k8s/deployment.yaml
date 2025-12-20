@@ -23,16 +23,22 @@ spec:
       labels:
         app: pinit-notification
     spec:
+      imagePullSecrets:
+        - name: ghcr-pull-secret
       terminationGracePeriodSeconds: 30
       volumes:
         - name: keys
           secret:
             secretName: pinit-keys
-            defaultMode: 0400
+            defaultMode: 0444
       containers:
         - name: app
           image: ghcr.io/pinit-scheduler/pinit-notification/app:${GITHUB_SHA} # ${{ github.sha }} 환경변수로 주입 필요
           imagePullPolicy: IfNotPresent
+
+          env:
+            - name: SPRING_PROFILES_ACTIVE
+              value: prod
 
           volumeMounts:
             - mountPath: /etc/keys
