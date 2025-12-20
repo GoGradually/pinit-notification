@@ -81,3 +81,10 @@ sourceSets {
 tasks.named('test') {
     useJUnitPlatform()
 }
+
+tasks.named('compileJava') {
+    dependsOn(tasks.named('generateProto'))
+}
+tasks.named('compileTestJava') {
+    dependsOn(tasks.named('generateTestProto'))
+}
