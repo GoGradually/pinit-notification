@@ -45,19 +45,24 @@ public class FcmService implements PushService {
     }
 
     @Override
+    public boolean isSubscribed(Long memberId, String deviceId) {
+        return pushSubscriptionRepository.findByMemberIdAndDeviceId(memberId, deviceId).isPresent();
+    }
+
+    @Override
     public String getVapidPublicKey() {
         return vapidPublicKey;
     }
 
     @Override
     @Transactional
-    public void subscribe(Long memberId, String token) {
-        pushSubscriptionRepository.save(new PushSubscription(memberId, token));
+    public void subscribe(Long memberId, String deviceId, String token) {
+        pushSubscriptionRepository.save(new PushSubscription(memberId, deviceId, token));
     }
 
     @Override
     @Transactional
-    public void unsubscribe(Long memberId, String token) {
-        pushSubscriptionRepository.delete(new PushSubscription(memberId, token));
+    public void unsubscribe(Long memberId, String deviceId, String token) {
+        pushSubscriptionRepository.deleteByMemberIdAndDeviceId(memberId, deviceId);
     }
 }
