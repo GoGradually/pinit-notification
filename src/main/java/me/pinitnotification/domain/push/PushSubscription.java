@@ -23,12 +23,12 @@ public class PushSubscription {
     @GeneratedValue
     private Long id;
 
-    @Column(name="token", nullable = false)
-    private String token;
+    @Column(name = "member_id", nullable = false)
+    private Long memberId;
     @Column(name = "device_id", nullable = false)
     private String deviceId;
-    @Column(name="member_id", nullable = false)
-    private Long memberId;
+    @Column(name = "token", nullable = false)
+    private String token;
     @LastModifiedDate
     @Column(name = "modified_at", nullable = false)
     private Instant modifiedAt;
@@ -37,6 +37,13 @@ public class PushSubscription {
     public PushSubscription(Long memberId, String deviceId, String token) {
         this.memberId = memberId;
         this.deviceId = deviceId;
+        this.token = token;
+    }
+
+    public void updateToken(String token) {
+        if (this.modifiedAt.isAfter(Instant.now())) {
+            return;
+        }
         this.token = token;
     }
 }
