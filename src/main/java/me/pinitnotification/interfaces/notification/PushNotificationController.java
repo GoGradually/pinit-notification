@@ -45,7 +45,7 @@ public class PushNotificationController {
                     content = @Content(mediaType = "text/plain", schema = @Schema(implementation = Boolean.class)))
     })
     public boolean isSubscribed(
-            @MemberId Long memberId,
+            @Parameter(hidden = true) @MemberId Long memberId,
             @RequestParam String deviceId) {
         return pushService.isSubscribed(memberId, deviceId);
     }
