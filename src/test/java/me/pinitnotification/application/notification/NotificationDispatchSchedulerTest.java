@@ -16,12 +16,7 @@ import java.time.Instant;
 import java.time.ZoneOffset;
 import java.util.List;
 
-import static org.mockito.Mockito.any;
-import static org.mockito.Mockito.anyString;
-import static org.mockito.Mockito.eq;
-import static org.mockito.Mockito.never;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class NotificationDispatchSchedulerTest {
@@ -49,7 +44,7 @@ class NotificationDispatchSchedulerTest {
 
         when(notificationRepository.findAll()).thenReturn(List.of(past, future));
         when(pushSubscriptionRepository.findAllByMemberId(1L))
-                .thenReturn(List.of(new PushSubscription(1L, "token-1"), new PushSubscription(1L, "token-2")));
+                .thenReturn(List.of(new PushSubscription(1L, "device-1", "token-1"), new PushSubscription(1L, "device-2", "token-2")));
 
         scheduler.dispatchDueNotifications();
 
