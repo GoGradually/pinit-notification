@@ -2,7 +2,7 @@
 
 vapid:
   keys:
-    public: BA7L1jqFAyxo_KZZZBkUeqC1uY6iSP1NvyNVqV-L_dmqEnHA__5cNs87WJ5QDiH8UC3hgLQu99mbbxlwZZf7J4U
+    public: BF8QQIULasLr94n0l0xbv43yZeNICudM5lpQN08VYn2g5VjBPU0wM98HypyRmEb-y0ARRsiZ_wcgSMIC-nq-x20
     private: ${VAPID_PRIVATE_KEY}
 
 
