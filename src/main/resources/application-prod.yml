@@ -23,5 +23,3 @@ spring:
 path:
   key:
     firebase: /etc/keys/pinit-firebase-key.json
-    jwt:
-      public: /etc/keys/jwt-public-key.pem
