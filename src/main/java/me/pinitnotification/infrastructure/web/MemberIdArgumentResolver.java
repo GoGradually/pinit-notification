@@ -4,7 +4,6 @@ import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import me.pinitnotification.domain.member.MemberId;
 import me.pinitnotification.domain.member.exception.MemberNotFoundException;
-import me.pinitnotification.infrastructure.authenticate.JwtTokenProvider;
 import org.springframework.core.MethodParameter;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.support.WebDataBinderFactory;
@@ -15,11 +14,6 @@ import org.springframework.web.method.support.ModelAndViewContainer;
 @Slf4j
 @Component
 public class MemberIdArgumentResolver implements HandlerMethodArgumentResolver {
-    private final JwtTokenProvider jwtTokenProvider;
-
-    public MemberIdArgumentResolver(JwtTokenProvider jwtTokenProvider) {
-        this.jwtTokenProvider = jwtTokenProvider;
-    }
 
     @Override
     public boolean supportsParameter(MethodParameter parameter) {
