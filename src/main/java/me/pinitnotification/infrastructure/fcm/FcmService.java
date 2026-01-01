@@ -39,7 +39,7 @@ public class FcmService implements PushService {
             firebaseMessaging.send(message);
         } catch (FirebaseMessagingException e) {
             log.error(e.getMessage(), e);
-            if (e.getMessagingErrorCode() == MessagingErrorCode.UNREGISTERED) {
+            if (e.getMessagingErrorCode() == MessagingErrorCode.UNREGISTERED || e.getMessagingErrorCode() == MessagingErrorCode.INVALID_ARGUMENT) {
                 // Todo 토큰 삭제 방식 변경 필요
                 pushSubscriptionRepository.deleteByToken(token);
             }
