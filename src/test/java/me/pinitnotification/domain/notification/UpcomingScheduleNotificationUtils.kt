@@ -4,13 +4,14 @@ import org.junit.platform.commons.util.ReflectionUtils
 
 fun getSampleUpcomingScheduleNotification(
     id: Long = 1L,
+    ownerId: Long = 1L,
     scheduleId: Long = 1L,
     scheduleTitle: String = "sample",
     scheduleStartTime: String = "2024-06-01T10:00:00Z",
     idempotencyKey: String = "",
 ): UpcomingScheduleNotification {
     val sample = UpcomingScheduleNotification(
-        id,
+        ownerId,
         scheduleId,
         scheduleTitle,
         scheduleStartTime,
@@ -22,7 +23,7 @@ fun getSampleUpcomingScheduleNotification(
         ReflectionUtils.HierarchyTraversalMode.TOP_DOWN
     ).forEach { field ->
         field.isAccessible = true
-        field.set(sample, 1L)
+        field.set(sample, id)
     }
     return sample
 }
