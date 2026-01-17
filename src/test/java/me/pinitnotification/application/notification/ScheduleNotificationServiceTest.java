@@ -7,6 +7,7 @@ import me.pinitnotification.application.notification.query.ScheduleBasics;
 import me.pinitnotification.application.notification.query.ScheduleQueryPort;
 import me.pinitnotification.domain.notification.UpcomingScheduleNotification;
 import me.pinitnotification.domain.notification.UpcomingScheduleNotificationRepository;
+import me.pinitnotification.domain.shared.IdGenerator;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -30,6 +31,9 @@ class ScheduleNotificationServiceTest {
     @Mock
     private ScheduleQueryPort scheduleQueryPort;
 
+    @Mock
+    private IdGenerator idGenerator;
+
     @InjectMocks
     private ScheduleNotificationService scheduleNotificationService;
 
@@ -41,7 +45,7 @@ class ScheduleNotificationServiceTest {
 
     @BeforeEach
     void resetMocks() {
-        reset(notificationRepository, scheduleQueryPort);
+        reset(notificationRepository, scheduleQueryPort, idGenerator);
     }
 
     @Test
@@ -66,6 +70,7 @@ class ScheduleNotificationServiceTest {
         when(notificationRepository.findByScheduleIdAndOwnerId(scheduleId, ownerId)).thenReturn(Optional.empty());
         when(scheduleQueryPort.getScheduleBasics(scheduleId, ownerId))
                 .thenReturn(new ScheduleBasics(scheduleId, ownerId, "title", "2024-03-01T00:00:00Z"));
+        when(idGenerator.generate()).thenReturn(java.util.UUID.randomUUID());
 
         UpcomingUpdatedCommand command = new UpcomingUpdatedCommand(
                 ownerId, scheduleId, OffsetDateTime.parse("2024-04-01T09:30:00Z"), "key-123"
@@ -97,6 +102,7 @@ class ScheduleNotificationServiceTest {
         when(notificationRepository.existsByScheduleIdAndOwnerId(scheduleId, ownerId)).thenReturn(false);
         when(scheduleQueryPort.getScheduleBasics(scheduleId, ownerId))
                 .thenReturn(new ScheduleBasics(scheduleId, ownerId, "canceled title", "2024-05-10T10:00:00Z"));
+        when(idGenerator.generate()).thenReturn(java.util.UUID.randomUUID());
         ScheduleStateChangedCommand command = new ScheduleStateChangedCommand(ownerId, scheduleId, "BEFORE", "cancel-key");
 
         scheduleNotificationService.handleScheduleCanceled(command);

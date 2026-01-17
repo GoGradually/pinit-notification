@@ -1,5 +1,6 @@
 package me.pinitnotification.domain.notification
 
+import me.pinitnotification.infrastructure.persistence.UuidV7Generator
 import org.junit.platform.commons.util.ReflectionUtils
 
 fun getSampleUpcomingScheduleNotification(
@@ -11,6 +12,7 @@ fun getSampleUpcomingScheduleNotification(
     idempotencyKey: String = "",
 ): UpcomingScheduleNotification {
     val sample = UpcomingScheduleNotification(
+        UuidV7Generator.generate(),
         ownerId,
         scheduleId,
         scheduleTitle,
@@ -19,7 +21,7 @@ fun getSampleUpcomingScheduleNotification(
     )
     ReflectionUtils.findFields(
         UpcomingScheduleNotification::class.java,
-        { field -> field.name == "id" },
+        { field -> field.name == "legacyId" },
         ReflectionUtils.HierarchyTraversalMode.TOP_DOWN
     ).forEach { field ->
         field.isAccessible = true
