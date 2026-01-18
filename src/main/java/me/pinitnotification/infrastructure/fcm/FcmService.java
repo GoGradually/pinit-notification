@@ -9,6 +9,7 @@ import me.pinitnotification.application.push.PushService;
 import me.pinitnotification.domain.notification.Notification;
 import me.pinitnotification.domain.push.PushSubscription;
 import me.pinitnotification.domain.push.PushSubscriptionRepository;
+import me.pinitnotification.domain.shared.IdGenerator;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,10 +23,14 @@ public class FcmService implements PushService {
     private String vapidPublicKey;
     private final FirebaseMessaging firebaseMessaging;
     private final PushSubscriptionRepository pushSubscriptionRepository;
+    private final IdGenerator idGenerator;
 
-    public FcmService(FirebaseMessaging firebaseMessaging, PushSubscriptionRepository pushSubscriptionRepository) {
+    public FcmService(FirebaseMessaging firebaseMessaging,
+                      PushSubscriptionRepository pushSubscriptionRepository,
+                      IdGenerator idGenerator) {
         this.firebaseMessaging = firebaseMessaging;
         this.pushSubscriptionRepository = pushSubscriptionRepository;
+        this.idGenerator = idGenerator;
     }
 
     @Override
@@ -64,7 +69,7 @@ public class FcmService implements PushService {
             PushSubscription existingSubscription = byMemberIdAndDeviceId.get();
             existingSubscription.updateToken(token);
         } else {
-            pushSubscriptionRepository.save(new PushSubscription(memberId, deviceId, token));
+            pushSubscriptionRepository.save(new PushSubscription(idGenerator.generate(), memberId, deviceId, token));
         }
     }
 

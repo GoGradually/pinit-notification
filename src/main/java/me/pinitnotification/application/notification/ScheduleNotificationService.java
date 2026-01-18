@@ -7,6 +7,7 @@ import me.pinitnotification.application.notification.query.ScheduleBasics;
 import me.pinitnotification.application.notification.query.ScheduleQueryPort;
 import me.pinitnotification.domain.notification.UpcomingScheduleNotification;
 import me.pinitnotification.domain.notification.UpcomingScheduleNotificationRepository;
+import me.pinitnotification.domain.shared.IdGenerator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -18,10 +19,14 @@ public class ScheduleNotificationService {
 
     private final UpcomingScheduleNotificationRepository notificationRepository;
     private final ScheduleQueryPort scheduleQueryPort;
+    private final IdGenerator idGenerator;
 
-    public ScheduleNotificationService(UpcomingScheduleNotificationRepository notificationRepository, ScheduleQueryPort scheduleQueryPort) {
+    public ScheduleNotificationService(UpcomingScheduleNotificationRepository notificationRepository,
+                                       ScheduleQueryPort scheduleQueryPort,
+                                       IdGenerator idGenerator) {
         this.notificationRepository = notificationRepository;
         this.scheduleQueryPort = scheduleQueryPort;
+        this.idGenerator = idGenerator;
     }
 
     @Transactional
@@ -74,6 +79,7 @@ public class ScheduleNotificationService {
         String scheduleStartTime = scheduleStartTimeOverride != null ? scheduleStartTimeOverride : basics.designatedStartTime();
 
         return new UpcomingScheduleNotification(
+                idGenerator.generate(),
                 basics.ownerId(),
                 basics.scheduleId(),
                 basics.scheduleTitle(),
