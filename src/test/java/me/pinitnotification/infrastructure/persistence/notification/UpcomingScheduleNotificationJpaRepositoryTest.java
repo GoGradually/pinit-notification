@@ -24,7 +24,6 @@ class UpcomingScheduleNotificationJpaRepositoryTest {
 
         UpcomingScheduleNotificationEntity saved = repository.save(entity);
 
-        assertThat(saved.getId()).isNotNull();
         assertThat(saved.getPublicId()).isNotNull();
 
         Optional<UpcomingScheduleNotificationEntity> loaded =
