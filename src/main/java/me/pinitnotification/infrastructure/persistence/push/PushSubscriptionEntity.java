@@ -19,10 +19,6 @@ import java.util.UUID;
                 @UniqueConstraint(
                         name = "uk_deviceId_memberId",
                         columnNames = {"member_id", "device_id"}
-                ),
-                @UniqueConstraint(
-                        name = "uk_publicId",
-                        columnNames = {"public_id"}
                 )
         }
 )
@@ -30,12 +26,11 @@ import java.util.UUID;
 @Getter
 @Setter
 public class PushSubscriptionEntity {
-    @Id
-    @GeneratedValue
     private Long id;
 
+    @Id
     @JdbcTypeCode(SqlTypes.CHAR)
-    @Column(name = "public_id", length = 36, unique = true)
+    @Column(name = "public_id", length = 36)
     private UUID publicId;
 
     @Column(name = "member_id", nullable = false)

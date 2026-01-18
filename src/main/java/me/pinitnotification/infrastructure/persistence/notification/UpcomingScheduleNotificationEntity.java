@@ -14,19 +14,17 @@ import java.util.UUID;
         name = "upcoming_schedule_notification",
         uniqueConstraints = {
                 @UniqueConstraint(name = "uk_schedule_owner", columnNames = {"schedule_id", "owner_id"}),
-                @UniqueConstraint(name = "uk_idempotent_key", columnNames = {"idempotent_key"}),
-                @UniqueConstraint(name = "uk_publicId", columnNames = {"public_id"})
+                @UniqueConstraint(name = "uk_idempotent_key", columnNames = {"idempotent_key"})
         }
 )
 @Getter
 @Setter
 public class UpcomingScheduleNotificationEntity {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Id
     @JdbcTypeCode(SqlTypes.CHAR)
-    @Column(name = "public_id", length = 36, unique = true)
+    @Column(name = "public_id", length = 36)
     private UUID publicId;
 
     @Column(name = "owner_id", nullable = false)
