@@ -9,7 +9,6 @@ import java.util.UUID;
 
 @Getter
 public class UpcomingScheduleNotification implements Notification {
-    private Long legacyId;
     private UUID id;
     private Long ownerId;
     private Long scheduleId;
@@ -18,16 +17,6 @@ public class UpcomingScheduleNotification implements Notification {
     private String idempotentKey;
 
     protected UpcomingScheduleNotification() {}
-
-    public UpcomingScheduleNotification(Long legacyId, UUID id, Long ownerId, Long scheduleId, String scheduleTitle, String scheduleStartTime, String idempotentKey) {
-        this.legacyId = legacyId;
-        this.id = id;
-        this.ownerId = ownerId;
-        this.scheduleId = scheduleId;
-        this.scheduleTitle = scheduleTitle;
-        this.scheduleStartTime = scheduleStartTime;
-        this.idempotentKey = idempotentKey;
-    }
 
     public UpcomingScheduleNotification(UUID id, Long ownerId, Long scheduleId, String scheduleTitle, String scheduleStartTime, String idempotentKey) {
         this.id = id;

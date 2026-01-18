@@ -54,7 +54,6 @@ public class UpcomingScheduleNotificationRepositoryAdapter implements UpcomingSc
 
     private UpcomingScheduleNotification toDomain(UpcomingScheduleNotificationEntity entity) {
         return new UpcomingScheduleNotification(
-                entity.getId(),
                 entity.getPublicId(),
                 entity.getOwnerId(),
                 entity.getScheduleId(),
@@ -66,7 +65,6 @@ public class UpcomingScheduleNotificationRepositoryAdapter implements UpcomingSc
 
     private UpcomingScheduleNotificationEntity toEntity(UpcomingScheduleNotification domain) {
         UpcomingScheduleNotificationEntity entity = new UpcomingScheduleNotificationEntity();
-        entity.setId(domain.getLegacyId());
         entity.setPublicId(domain.getId());
         entity.setOwnerId(domain.getOwnerId());
         entity.setScheduleId(domain.getScheduleId());
