@@ -5,6 +5,7 @@ import com.google.firebase.messaging.FirebaseMessagingException;
 import com.google.firebase.messaging.Message;
 import com.google.firebase.messaging.MessagingErrorCode;
 import lombok.extern.slf4j.Slf4j;
+import me.pinitnotification.application.push.PushSendResult;
 import me.pinitnotification.application.push.PushService;
 import me.pinitnotification.domain.notification.Notification;
 import me.pinitnotification.domain.push.PushSubscription;
@@ -34,7 +35,7 @@ public class FcmService implements PushService {
     }
 
     @Override
-    public void sendPushMessage(String token, Notification notification) {
+    public PushSendResult sendPushMessage(String token, Notification notification) {
         log.info("publish token: {}", token);
         Message message = Message.builder()
                 .setToken(token)
@@ -42,12 +43,13 @@ public class FcmService implements PushService {
                 .build();
         try {
             firebaseMessaging.send(message);
+            return PushSendResult.successResult();
         } catch (FirebaseMessagingException e) {
             log.error(e.getMessage(), e);
             if (e.getMessagingErrorCode() == MessagingErrorCode.UNREGISTERED || e.getMessagingErrorCode() == MessagingErrorCode.INVALID_ARGUMENT) {
-                // Todo 토큰 삭제 방식 변경 필요
-                pushSubscriptionRepository.deleteByToken(token);
+                return PushSendResult.invalidTokenResult();
             }
+            return PushSendResult.failedResult();
         }
     }
 
