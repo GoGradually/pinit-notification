@@ -15,6 +15,9 @@ import java.util.UUID;
         uniqueConstraints = {
                 @UniqueConstraint(name = "uk_schedule_owner", columnNames = {"schedule_id", "owner_id"}),
                 @UniqueConstraint(name = "uk_idempotent_key", columnNames = {"idempotent_key"})
+        },
+        indexes = {
+                @Index(name = "idx_upcoming_start_time", columnList = "schedule_start_time")
         }
 )
 @Getter

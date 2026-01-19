@@ -8,7 +8,8 @@ public interface PushService {
     void subscribe(Long memberId, String deviceId, String token);
 
     void unsubscribe(Long memberId, String deviceId, String token);
-    void sendPushMessage(String token, Notification notification);
+
+    PushSendResult sendPushMessage(String token, Notification notification);
 
     boolean isSubscribed(Long memberId, String deviceId);
 }

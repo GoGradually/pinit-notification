@@ -4,6 +4,7 @@ import me.pinitnotification.domain.push.PushSubscription;
 import me.pinitnotification.domain.push.PushSubscriptionRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
@@ -37,6 +38,14 @@ public class PushSubscriptionRepositoryAdapter implements PushSubscriptionReposi
     @Override
     public void deleteByToken(String token) {
         jpaRepository.deleteByToken(token);
+    }
+
+    @Override
+    public void deleteByTokens(Collection<String> tokens) {
+        if (tokens == null || tokens.isEmpty()) {
+            return;
+        }
+        jpaRepository.deleteByTokenIn(tokens);
     }
 
     @Override

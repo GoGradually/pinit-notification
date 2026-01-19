@@ -1,5 +1,6 @@
 package me.pinitnotification.domain.push;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
@@ -11,6 +12,8 @@ public interface PushSubscriptionRepository {
     PushSubscription save(PushSubscription subscription);
 
     void deleteByToken(String token);
+
+    void deleteByTokens(Collection<String> tokens);
 
     void deleteByMemberIdAndDeviceId(Long memberId, String deviceId);
 }
