@@ -17,6 +17,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 class PushSubscriptionRepositoryAdapterTest {
     @Autowired
     private PushSubscriptionRepository repository;
+    @Autowired
+    private PushSubscriptionJpaRepository jpaRepository;
 
     @Test
     void savesAndLoadsDomainWithPublicId() {
@@ -37,5 +39,30 @@ class PushSubscriptionRepositoryAdapterTest {
 
         assertThat(loaded).isPresent();
         assertThat(loaded.get().getId()).isEqualTo(publicId);
+    }
+
+    @Test
+    void deletesTokensInBatch() {
+        PushSubscriptionEntity token1 = subscription("token-1", "device-1");
+        PushSubscriptionEntity token2 = subscription("token-2", "device-2");
+        PushSubscriptionEntity token3 = subscription("token-3", "device-3");
+        jpaRepository.save(token1);
+        jpaRepository.save(token2);
+        jpaRepository.save(token3);
+
+        repository.deleteByTokens(java.util.List.of("token-1", "token-x"));
+
+        assertThat(jpaRepository.findAll())
+                .extracting(PushSubscriptionEntity::getToken)
+                .containsExactlyInAnyOrder("token-2", "token-3");
+    }
+
+    private PushSubscriptionEntity subscription(String token, String deviceId) {
+        PushSubscriptionEntity entity = new PushSubscriptionEntity();
+        entity.setPublicId(UUID.randomUUID());
+        entity.setMemberId(201L);
+        entity.setDeviceId(deviceId);
+        entity.setToken(token);
+        return entity;
     }
 }
