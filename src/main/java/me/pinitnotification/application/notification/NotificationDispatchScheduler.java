@@ -13,7 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Clock;
 import java.time.Instant;
-import java.util.LinkedHashSet;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -49,7 +49,7 @@ public class NotificationDispatchScheduler {
             return;
         }
 
-        Set<String> tokensToDelete = new LinkedHashSet<>();
+        Set<String> tokensToDelete = new HashSet<>();
         dispatchItems.forEach(item -> sendNotificationToOwner(item, tokensToDelete));
         notificationRepository.deleteAllInBatch(dispatchItems.stream().map(NotificationDispatchItem::notification).toList());
 
