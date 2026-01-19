@@ -4,7 +4,6 @@ import me.pinitnotification.application.push.PushSendResult;
 import me.pinitnotification.application.push.PushService;
 import me.pinitnotification.domain.notification.UpcomingScheduleNotification;
 import me.pinitnotification.domain.notification.UpcomingScheduleNotificationRepository;
-import me.pinitnotification.domain.push.PushSubscriptionRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -27,7 +26,7 @@ class NotificationDispatchSchedulerTest {
     @Mock
     private NotificationDispatchQueryRepository dispatchQueryRepository;
     @Mock
-    private PushSubscriptionRepository pushSubscriptionRepository;
+    private PushTokenCleanupService pushTokenCleanupService;
     @Mock
     private PushService pushService;
 
@@ -37,7 +36,7 @@ class NotificationDispatchSchedulerTest {
     @BeforeEach
     void setUp() {
         clock = Clock.fixed(Instant.parse("2024-06-01T10:00:00Z"), ZoneOffset.UTC);
-        scheduler = new NotificationDispatchScheduler(notificationRepository, dispatchQueryRepository, pushSubscriptionRepository, pushService, clock);
+        scheduler = new NotificationDispatchScheduler(notificationRepository, dispatchQueryRepository, pushTokenCleanupService, pushService, clock);
     }
 
     @Test
@@ -53,7 +52,7 @@ class NotificationDispatchSchedulerTest {
         verify(pushService).sendPushMessage("token-1", notification);
         verify(pushService).sendPushMessage("token-2", notification);
         verify(notificationRepository).deleteAllInBatch(List.of(notification));
-        verify(pushSubscriptionRepository, never()).deleteByTokens(any());
+        verify(pushTokenCleanupService, never()).deleteTokensInNewTransaction(any());
     }
 
     @Test
@@ -67,7 +66,7 @@ class NotificationDispatchSchedulerTest {
 
         verify(pushService, never()).sendPushMessage(anyString(), any());
         verify(notificationRepository).deleteAllInBatch(List.of(past));
-        verify(pushSubscriptionRepository, never()).deleteByTokens(any());
+        verify(pushTokenCleanupService, never()).deleteTokensInNewTransaction(any());
     }
 
     @Test
@@ -82,7 +81,7 @@ class NotificationDispatchSchedulerTest {
 
         scheduler.dispatchDueNotifications();
 
-        verify(pushSubscriptionRepository).deleteByTokens(Set.of("token-1"));
+        verify(pushTokenCleanupService).deleteTokensInNewTransaction(Set.of("token-1"));
         verify(notificationRepository).deleteAllInBatch(List.of(notification));
     }
 }

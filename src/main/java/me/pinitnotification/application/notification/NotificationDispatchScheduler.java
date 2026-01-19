@@ -4,7 +4,6 @@ import me.pinitnotification.application.push.PushSendResult;
 import me.pinitnotification.application.push.PushService;
 import me.pinitnotification.domain.notification.UpcomingScheduleNotification;
 import me.pinitnotification.domain.notification.UpcomingScheduleNotificationRepository;
-import me.pinitnotification.domain.push.PushSubscriptionRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -23,18 +22,18 @@ public class NotificationDispatchScheduler {
 
     private final UpcomingScheduleNotificationRepository notificationRepository;
     private final NotificationDispatchQueryRepository dispatchQueryRepository;
-    private final PushSubscriptionRepository pushSubscriptionRepository;
+    private final PushTokenCleanupService pushTokenCleanupService;
     private final PushService pushService;
     private final Clock clock;
 
     public NotificationDispatchScheduler(UpcomingScheduleNotificationRepository notificationRepository,
                                          NotificationDispatchQueryRepository dispatchQueryRepository,
-                                         PushSubscriptionRepository pushSubscriptionRepository,
+                                         PushTokenCleanupService pushTokenCleanupService,
                                          PushService pushService,
                                          Clock clock) {
         this.notificationRepository = notificationRepository;
         this.dispatchQueryRepository = dispatchQueryRepository;
-        this.pushSubscriptionRepository = pushSubscriptionRepository;
+        this.pushTokenCleanupService = pushTokenCleanupService;
         this.pushService = pushService;
         this.clock = clock;
     }
@@ -54,7 +53,7 @@ public class NotificationDispatchScheduler {
         notificationRepository.deleteAllInBatch(dispatchItems.stream().map(NotificationDispatchItem::notification).toList());
 
         if (!tokensToDelete.isEmpty()) {
-            pushSubscriptionRepository.deleteByTokens(tokensToDelete);
+            deleteTokensSafely(tokensToDelete);
         }
     }
 
@@ -74,5 +73,13 @@ public class NotificationDispatchScheduler {
                 tokensToDelete.add(token);
             }
         });
+    }
+
+    private void deleteTokensSafely(Set<String> tokensToDelete) {
+        try {
+            pushTokenCleanupService.deleteTokensInNewTransaction(tokensToDelete);
+        } catch (Exception ex) {
+            log.warn("Failed to delete invalid push tokens; notifications already removed. tokens={}", tokensToDelete.size(), ex);
+        }
     }
 }
